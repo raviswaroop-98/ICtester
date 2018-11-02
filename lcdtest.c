@@ -67,7 +67,7 @@ void lcdDataWrite(unsigned char Data)
 	E = 1;
 	MSdelay(5);
 	E = 0;
-	MSdelay(10);s
+	MSdelay(10);
 }
 	
 void lcdPrint(char *string)
