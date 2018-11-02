@@ -1,10 +1,8 @@
 #include<reg52.h>
-#include<intrins.h>
 
 #define lcdData P3
 
 #define clearDisplay 0x01
-#define rightToLeft  0x06
 #define cursorBlink  0x0E
 #define twoLines     0x38
 #define G1           0x80
@@ -18,66 +16,68 @@ sbit E  = P1^6;
 sbit Busy = P3^0;
 
 void lcdInit(void);
-void lcdCmdWrite(unsigned char command);
-void lcdDataWrite(unsigned char Data);
+void lcdCmdWrite(unsigned char );
+void lcdDataWrite(unsigned char );
 void lcdPrint(char *string);
-void lcdBusy(void);
+void MSdelay(unsigned int);
 
 void main(void)
 {
 	lcdInit();
-	
+	lcdPrint("LCD WORKING");
+	lcdCmdWrite(0xC0);
+	MSdelay(10);
+	lcdPrint("BITCHES...!!");
+	while(1)
+	{
+	}
+}
+
+void MSdelay(unsigned int time)
+{
+	unsigned int i,j;
+	for(i = 0; i < time; i++)
+	{
+		for(j=0; j<165; j++);
+	}
 }
 
 void lcdInit()
 {
 	lcdCmdWrite(clearDisplay);
-	lcdCmdWrite(rightToLeft);
 	lcdCmdWrite(cursorBlink);
 	lcdCmdWrite(twoLines);
+	lcdCmdWrite(G1);
 }
 
-void lcdBusy()
-{
-	Busy = 1;
-	RS = 0;
-	RW = 1;
-	while (Busy == 1)
-	{
-		E = 0;
-		_nop_ ();
-		E = 1;
-	}
-}
 
 void lcdCmdWrite(unsigned char command)
 {
-	lcdBusy();
 	RS = 0;
 	RW = 0;
 	lcdData = command;
 	E = 1;
-	_nop_ ();
+	MSdelay(5);
 	E = 0;
+	MSdelay(10);
 }
 
 void lcdDataWrite(unsigned char Data)
 {
-	lcdBusy();
 	RS = 1;
 	RW = 0;
 	lcdData = Data;
 	E = 1;
-	_nop_();
+	MSdelay(5);
 	E = 0;
+	MSdelay(10);s
 }
 	
 void lcdPrint(char *string)
 {
-  while(*string)
+	while(*string > 0)
 	{
-     lcdDataWrite(*string++);
+		lcdDataWrite(*string++);
 	}
-}	
 	
-	
+}
