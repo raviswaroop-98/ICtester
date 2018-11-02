@@ -25,9 +25,6 @@ void main(void)
 {
 	lcdInit();
 	lcdPrint("LCD WORKING");
-	lcdCmdWrite(0xC0);
-	MSdelay(10);
-	lcdPrint("BITCHES...!!");
 	while(1)
 	{
 	}
